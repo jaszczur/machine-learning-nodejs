@@ -1,5 +1,5 @@
 
-export class Brain {
+export default class Brain {
     constructor() {
         this.layers = [];
     }
