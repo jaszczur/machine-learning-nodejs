@@ -8,6 +8,7 @@
     "start": "babel-node src/index.js",
     "build": "babel src --out-dir dist",
       "test": "mocha --require babel-polyfill --compilers js:babel-register --reporter nyan 'src/**/*-test.js'",
+      "tdd": "mocha --require babel-polyfill --compilers js:babel-register --reporter nyan -w 'src/**/*.js'",
       "lint": "eslint src"
   },
   "devDependencies": {
