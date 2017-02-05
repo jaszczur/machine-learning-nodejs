@@ -4,8 +4,8 @@ function _random() {
 }
 
 function sigmoid(value) {
-    return (1 / (1 + Math.exp((-1 * value) / 1)));
-};
+    return 1 / (1 + Math.exp((-1 * value) / 1));
+}
 
 export class BrainFactory {
   constructor(input_size, output_size) {
@@ -64,5 +64,35 @@ export class BrainFactory {
 export class Brain {
   constructor(layers) {
     this.layers = layers;
+  }
+
+  compute(inputs) {
+    if (inputs.length !== this.layers[0].length) {
+      throw "Illegal input length";
+    }
+
+    this._set_inputs(inputs);
+    this._feed_forward();
+    return this._collect_outputs();
+  }
+
+  _set_inputs(inputs) {
+    this.layers[0].forEach((neuron, n) => neuron.value = inputs[n]);
+  }
+
+  _feed_forward() {
+    this.layers.slice(1).forEach((layer, l) => {
+      let prev_layer = this.layers[l];
+
+      layer.forEach(neuron => {
+        let values = prev_layer.map((prev, p) => prev.value * neuron.weights[p]);
+        let value = values.reduce((a, b) => a + b, 0);
+        neuron.value = sigmoid(value);
+      });
+    });
+  }
+
+  _collect_outputs() {
+    return this.layers[this.layers.length - 1].map(neuron => neuron.value);
   }
 }
